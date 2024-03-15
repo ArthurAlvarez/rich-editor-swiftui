@@ -22,6 +22,7 @@ internal struct TextViewWrapper: UIViewRepresentable {
     private let backGroundColor: UIColor
     private let tag: Int?
     private let onTextViewEvent: ((TextViewEvents) -> Void)?
+    @Binding public var textViewAccess: TextViewOverRidden?
     
     public init(state: ObservedObject<RichEditorState>,
                 typingAttributes: Binding<[NSAttributedString.Key: Any]?>? = nil,
@@ -34,7 +35,8 @@ internal struct TextViewWrapper: UIViewRepresentable {
                 fontColor: Color = .black,
                 backGroundColor: UIColor = .clear,
                 tag: Int? = nil,
-                onTextViewEvent: ((TextViewEvents) -> Void)?) {
+                onTextViewEvent: ((TextViewEvents) -> Void)?,
+                textView: Binding<TextViewOverRidden?>) {
         self._state = state
         self._typingAttributes = typingAttributes != nil ? typingAttributes! : .constant(nil)
         self._attributesToApply = attributesToApply != nil ? attributesToApply! : .constant(nil)
@@ -48,6 +50,7 @@ internal struct TextViewWrapper: UIViewRepresentable {
         self.backGroundColor = backGroundColor
         self.tag = tag
         self.onTextViewEvent = onTextViewEvent
+        self._textViewAccess = textView
     }
     
     public func makeCoordinator() -> Coordinator {
@@ -95,6 +98,8 @@ internal struct TextViewWrapper: UIViewRepresentable {
             let scaledFont = fontStyle.withSize(scaledFontSize)
             textView.font = scaledFont
         }
+        
+        _textViewAccess.wrappedValue = textView
         
         return textView
     }
@@ -175,10 +180,10 @@ internal struct TextViewWrapper: UIViewRepresentable {
 }
 
 //MARK: - TextViewOverRidden
-class TextViewOverRidden: UITextView {
+public class TextViewOverRidden: UITextView {
     ///https://developer.apple.com/forums/thread/115445
     ///To disable system manu for edit text on text selection
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    public override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         return false //To disable clipboard Manu on text selection
     }
 }
