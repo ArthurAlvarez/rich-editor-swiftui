@@ -11,9 +11,9 @@ public class RichEditorState: ObservableObject {
     private let input: String
     private var adapter: EditorAdapter = DefaultAdapter()
     
-    @Published internal var editableText: NSMutableAttributedString
-    @Published internal var activeStyles: Set<TextSpanStyle> = []
-    @Published internal var activeAttributes: [NSAttributedString.Key: Any]? = [:]
+    internal var editableText: NSMutableAttributedString
+    internal var activeStyles: Set<TextSpanStyle> = []
+    internal var activeAttributes: [NSAttributedString.Key: Any]? = [:]
     internal var curretFont: FontRepresentable = .systemFont(ofSize: .standardRichTextFontSize)
     
     @Published internal var attributesToApply: ((spans: [(span:RichTextSpan, shouldApply: Bool)], onCompletion: () -> Void))? = nil
