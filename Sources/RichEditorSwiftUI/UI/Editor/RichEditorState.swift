@@ -16,7 +16,7 @@ public class RichEditorState: ObservableObject {
     internal var activeAttributes: [NSAttributedString.Key: Any]? = [:]
     internal var curretFont: FontRepresentable = .systemFont(ofSize: .standardRichTextFontSize)
     
-    @Published internal var attributesToApply: ((spans: [(span:RichTextSpan, shouldApply: Bool)], onCompletion: () -> Void))? = nil
+    internal var attributesToApply: ((spans: [(span:RichTextSpan, shouldApply: Bool)], onCompletion: () -> Void))? = nil
     
     private var spans: [RichTextSpan]
     private var highlightedRange: NSRange
